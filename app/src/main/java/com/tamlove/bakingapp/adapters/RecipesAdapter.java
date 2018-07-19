@@ -1,7 +1,6 @@
 package com.tamlove.bakingapp.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +35,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
     @Override
     public RecipesViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
-        int idForListItem = R.layout.recipe_list_item;
+        int idForListItem = R.layout.recipe_item;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         boolean attachToParentImmediately = false;
 
