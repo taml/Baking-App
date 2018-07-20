@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class RecipeActivity extends AppCompatActivity {
 
     public static final int GRID_SPAN_LARGE = 2;
-    public static final int GRID_SPAN_XLARGE = 4;
+    public static final int GRID_SPAN_XLARGE = 3;
 
     private LoaderManager loaderManager;
     private ConnectivityManager cm;
