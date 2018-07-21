@@ -1,6 +1,5 @@
 package com.tamlove.bakingapp;
 
-import android.app.LoaderManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
@@ -10,7 +9,11 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.tamlove.bakingapp.adapters.RecipesAdapter;
 import com.tamlove.bakingapp.models.Recipe;
@@ -29,17 +32,21 @@ public class RecipeActivity extends AppCompatActivity {
     public static final int GRID_SPAN_LARGE = 2;
     public static final int GRID_SPAN_XLARGE = 3;
 
-    private LoaderManager loaderManager;
     private ConnectivityManager cm;
     private NetworkInfo activeNetwork;
     private RecipesAdapter mRecipesAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
+    private TextView mErrorTextView;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+
+        mErrorTextView = findViewById(R.id.error_textview);
+        mProgressBar = findViewById(R.id.progress_bar);
 
         mRecyclerView = findViewById(R.id.recycler_view);
         mRecipesAdapter = new RecipesAdapter(RecipeActivity.this, new ArrayList<Recipe>());
@@ -61,7 +68,31 @@ public class RecipeActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mRecipesAdapter);
+        getContent();
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        if(itemId == R.id.action_refresh){
+            getContent();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isConnected(){
+        cm  = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null && activeNetwork.isConnected();
+    }
+
+    private void getContent(){
         if(isConnected()){
             RetrofitGetService service = RetrofitClient.getClientInstance().create(RetrofitGetService.class);
             Call<List<Recipe>> listCall = service.getRecipes();
@@ -70,28 +101,46 @@ public class RecipeActivity extends AppCompatActivity {
                 public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                     if(response.code() == 200){
                         getDataResponse(response.body());
+                        displayContent();
+                    } else {
+                        displayError();
+                        mErrorTextView.setText(getResources().getString(R.string.error_api_message));
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                    Log.v("Recipe Activity", "Error fetching data");
+                    displayError();
+                    mErrorTextView.setText(getResources().getString(R.string.error_api_message));
                 }
             });
+        } else {
+            displayError();
+            mErrorTextView.setText(getResources().getString(R.string.error_connection_message));
         }
-    }
-
-    private boolean isConnected(){
-        // Get a reference to the LoaderManager to interact with loaders.
-        loaderManager = getLoaderManager();
-        cm  = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-        activeNetwork = cm.getActiveNetworkInfo();
-        return activeNetwork != null && activeNetwork.isConnected();
     }
 
     private void getDataResponse(List<Recipe> recipe){
         mRecipesAdapter = new RecipesAdapter(this, recipe);
-        mRecipesAdapter.notifyDataSetChanged();
-        mRecyclerView.setAdapter(mRecipesAdapter);
+        if(mRecipesAdapter.getItemCount() == 0) {
+            displayError();
+            mErrorTextView.setText(getResources().getString(R.string.error_message));
+        } else {
+            mRecipesAdapter.notifyDataSetChanged();
+            mRecyclerView.setAdapter(mRecipesAdapter);
+        }
     }
+
+    private void displayError(){
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mErrorTextView.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private void displayContent(){
+        mProgressBar.setVisibility(View.INVISIBLE);
+        mErrorTextView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
 }

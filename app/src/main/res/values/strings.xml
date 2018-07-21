@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Baking App</string>
+    <string name="action_refresh">Refresh</string>
     <string name="recipe_image">Recipe Image</string>
+    <string name="error_message">No Recipes Available</string>
+    <string name="error_connection_message">No Internet Connectivity</string>
+    <string name="error_api_message">Issue Fetching Recipes</string>
 </resources>

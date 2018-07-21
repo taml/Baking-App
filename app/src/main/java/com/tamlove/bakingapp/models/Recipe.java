@@ -26,7 +26,11 @@ public class Recipe {
     }
 
     public String getName(){
-        return mName;
+        if(mImage == null){
+            return "";
+        } else {
+            return mName;
+        }
     }
 
     public List<Ingredients> getIngredients(){
@@ -38,11 +42,19 @@ public class Recipe {
     }
 
     public String getServings(){
-        return mServings;
+        if(mServings == null){
+            return "";
+        } else {
+            return mServings;
+        }
     }
 
     public String getImage(){
-        return mImage;
+        if(mImage == null){
+            return "";
+        } else {
+            return mImage;
+        }
     }
 
     public void setName(String name){
