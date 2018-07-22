@@ -3,11 +3,13 @@ package com.tamlove.bakingapp.adapters;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.tamlove.bakingapp.models.Recipe;
@@ -34,11 +36,12 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
             super(view);
             mImageView = view.findViewById(R.id.recipe_image);
             mNameTextView = view.findViewById(R.id.recipe_name);
+            view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-
+            Toast.makeText(mContext, "List Item", Toast.LENGTH_LONG).show();
         }
     }
 

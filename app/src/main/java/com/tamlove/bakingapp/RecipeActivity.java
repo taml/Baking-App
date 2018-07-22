@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +19,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.tamlove.bakingapp.UITests.SimpleIdlingResource;
 import com.tamlove.bakingapp.adapters.RecipesAdapter;
 import com.tamlove.bakingapp.models.Recipe;
 import com.tamlove.bakingapp.networking.RetrofitClient;
@@ -27,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecipeActivity extends AppCompatActivity {
+public class RecipeActivity extends AppCompatActivity implements RecipeDelayer.DelayerCallback {
 
     public static final int GRID_SPAN_LARGE = 2;
     public static final int GRID_SPAN_XLARGE = 3;
@@ -39,6 +44,8 @@ public class RecipeActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private TextView mErrorTextView;
     private ProgressBar mProgressBar;
+
+    @Nullable private static SimpleIdlingResource mIdlingResource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +107,8 @@ public class RecipeActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                     if(response.code() == 200){
-                        getDataResponse(response.body());
                         displayContent();
+                        RecipeDelayer.processRecipes(response.body(), RecipeActivity.this, mIdlingResource);
                     } else {
                         displayError();
                         mErrorTextView.setText(getResources().getString(R.string.error_api_message));
@@ -143,4 +150,17 @@ public class RecipeActivity extends AppCompatActivity {
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
+    @VisibleForTesting
+    @NonNull
+    public static IdlingResource getIdlingResource(){
+        if(mIdlingResource == null){
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
+    @Override
+    public void onDone(List<Recipe> recipeList) {
+        getDataResponse(recipeList);
+    }
 }

@@ -5,4 +5,6 @@
     <string name="error_message">No Recipes Available</string>
     <string name="error_connection_message">No Internet Connectivity</string>
     <string name="error_api_message">Issue Fetching Recipes</string>
+
+    <string name="testRecipeText">Cheesecake</string>
 </resources>
