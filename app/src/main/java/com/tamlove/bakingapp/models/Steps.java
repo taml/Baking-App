@@ -1,8 +1,11 @@
 package com.tamlove.bakingapp.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Steps {
+public class Steps implements Parcelable {
 
     @SerializedName("shortDescription")
     private String mShortDescription;
@@ -61,4 +64,36 @@ public class Steps {
                 ", mThumbnailURL='" + mThumbnailURL + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mShortDescription);
+        parcel.writeString(mDescription);
+        parcel.writeString(mVideoURL);
+        parcel.writeString(mThumbnailURL);
+    }
+
+    protected Steps(Parcel in) {
+        mShortDescription = in.readString();
+        mDescription = in.readString();
+        mVideoURL = in.readString();
+        mThumbnailURL = in.readString();
+    }
+
+    public static final Creator<Steps> CREATOR = new Creator<Steps>() {
+        @Override
+        public Steps createFromParcel(Parcel in) {
+            return new Steps(in);
+        }
+
+        @Override
+        public Steps[] newArray(int size) {
+            return new Steps[size];
+        }
+    };
 }

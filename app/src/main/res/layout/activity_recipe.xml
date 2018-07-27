@@ -1,29 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_recipe"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecipeActivity">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <TextView
-        android:id="@+id/error_textview"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_margin="@dimen/medium"
-        android:layout_gravity="center"
-        android:text="@string/error_message"
-        android:textSize="@dimen/primary_text_size"
-        android:visibility="invisible"/>
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="@dimen/progress_dimen"
-        android:layout_height="@dimen/progress_dimen"
-        android:layout_gravity="center" />
-
-</FrameLayout>
+    android:name="com.tamlove.bakingapp.ui.RecipeFragment" />

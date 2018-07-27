@@ -3,19 +3,19 @@ package com.tamlove.bakingapp;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
-import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+
+import com.tamlove.bakingapp.ui.RecipeActivity;
+import com.tamlove.bakingapp.ui.RecipeFragment;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,18 +27,13 @@ import org.junit.runner.RunWith;
 public class RecipeIdlingResourceRecyclerViewTest {
 
     private static final int ITEM_POSITION = 3;
-    private static final String ITEM_NAME = "Cheesecake";
 
     @Rule
     public ActivityTestRule<RecipeActivity> mActivityRule = new ActivityTestRule<>(RecipeActivity.class);
 
-    private IdlingResource mIdlingResouce;
-
     @Before
     public void registerIdlingResource(){
-//        mIdlingResouce = mActivityRule.getActivity().getIdlingResource();
-//        Espresso.registerIdlingResources(mIdlingResouce);
-        IdlingRegistry.getInstance().register(RecipeActivity.getIdlingResource());
+        IdlingRegistry.getInstance().register(RecipeFragment.getIdlingResource());
     }
 
     @Test
@@ -47,21 +42,16 @@ public class RecipeIdlingResourceRecyclerViewTest {
     }
 
     @Test
-    public void checkTextExists(){
+    public void checkTextExistsAndClick(){
         onView(ViewMatchers.withId(R.id.recycler_view)).perform(RecyclerViewActions.scrollToPosition(ITEM_POSITION));
-//        String itemText = mActivityRule.getActivity().getResources().getString(R.string.testRecipeText);
-//        onView(withText(ITEM_NAME)).check(matches(isDisplayed()));
-//        onView(withId(R.id.recipe_name)).check(matches(isDisplayed()));
-//        onView(withId(R.id.recycler_view))
-//                .perform(RecyclerViewActions.actionOnItemAtPosition(ITEM_POSITION, click()));
+        String itemText = mActivityRule.getActivity().getResources().getString(R.string.testRecipeText);
+        onView(withText(itemText)).check(matches(isDisplayed()));
+        onView(ViewMatchers.withId(R.id.recycler_view)).perform(RecyclerViewActions.actionOnItemAtPosition(ITEM_POSITION, click()));
     }
 
     @After
-    public void inregisterIdlingResource(){
-//        if(mIdlingResouce != null){
-//            Espresso.unregisterIdlingResources(mIdlingResouce);
-//        }
-        IdlingRegistry.getInstance().unregister(RecipeActivity.getIdlingResource());
+    public void unregisterIdlingResource(){
+        IdlingRegistry.getInstance().unregister(RecipeFragment.getIdlingResource());
     }
 
 }

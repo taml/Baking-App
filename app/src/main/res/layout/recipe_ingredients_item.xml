@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_margin="@dimen/small"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/recipe_quantity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="@dimen/primary_text_size"
+        android:gravity="center"
+        tools:text="961"/>
+
+    <TextView
+        android:id="@+id/recipe_measure"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="@dimen/primary_text_size"
+        android:gravity="center"
+        tools:text="TBLSP"/>
+
+    <TextView
+        android:id="@+id/recipe_ingredient"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:textSize="@dimen/primary_text_size"
+        android:paddingLeft="@dimen/medium"
+        android:paddingStart="@dimen/medium"
+        android:paddingRight="@dimen/medium"
+        android:paddingEnd="@dimen/medium"
+        tools:text="unsalted butter, softened and cut into 1 in. cubes"/>
+
+</LinearLayout>

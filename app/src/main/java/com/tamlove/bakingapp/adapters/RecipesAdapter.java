@@ -1,9 +1,10 @@
 package com.tamlove.bakingapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,13 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.tamlove.bakingapp.models.Recipe;
 import com.tamlove.bakingapp.R;
+import com.tamlove.bakingapp.ui.RecipeContentActivity;
 
 import java.util.List;
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesViewHolder>{
+
+    private static final String RECIPE_PARCELABLE_KEY = "recipe_parcelable";
 
     private Context mContext;
     private List<Recipe> mRecipe;
@@ -41,7 +45,13 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(mContext, "List Item", Toast.LENGTH_LONG).show();
+            int adapterPosition = getAdapterPosition();
+            Recipe currentRecipe = mRecipe.get(adapterPosition);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(RECIPE_PARCELABLE_KEY, currentRecipe);
+            Intent recipeContentIntent = new Intent(mContext, RecipeContentActivity.class);
+            recipeContentIntent.putExtras(bundle);
+            mContext.startActivity(recipeContentIntent);
         }
     }
 
@@ -78,4 +88,5 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
         if(mRecipe == null) return 0;
         return mRecipe.size();
     }
+
 }
