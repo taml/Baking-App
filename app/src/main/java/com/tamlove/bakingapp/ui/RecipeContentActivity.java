@@ -1,6 +1,7 @@
 package com.tamlove.bakingapp.ui;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -10,11 +11,17 @@ import android.os.Bundle;
 import com.tamlove.bakingapp.R;
 import com.tamlove.bakingapp.adapters.ViewPagerAdapter;
 import com.tamlove.bakingapp.models.Recipe;
+import com.tamlove.bakingapp.models.Steps;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class RecipeContentActivity extends AppCompatActivity {
+public class RecipeContentActivity extends AppCompatActivity implements RecipeStepsListFragment.OnStepClickListener {
 
     private static final String RECIPE_PARCELABLE_KEY = "recipe_parcelable";
+    private static final String STEPS_PARCELABLE_KEY = "steps_parcelable";
+    private static final String STEPS_ID_PARCELABLE_KEY = "steps_id_parcelable";
 
     public static Recipe sRecipe;
     private boolean mTwoPane;
@@ -57,6 +64,20 @@ public class RecipeContentActivity extends AppCompatActivity {
             viewPagerAdapter.addFrag(new RecipeStepsListFragment(), "Steps");
             viewPager.setAdapter(viewPagerAdapter);
             tabLayout.setupWithViewPager(viewPager);
+        }
+    }
+
+    @Override
+    public void onStepSelected(int stepId, List<Steps> steps) {
+        if(mTwoPane){
+
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(STEPS_PARCELABLE_KEY, (ArrayList<? extends Parcelable>) steps);
+            bundle.putInt(STEPS_ID_PARCELABLE_KEY, stepId);
+            Intent recipeStepsDetailIntent = new Intent(RecipeContentActivity.this, RecipeStepsDetailActivity.class);
+            recipeStepsDetailIntent.putExtras(bundle);
+            startActivity(recipeStepsDetailIntent);
         }
     }
 }

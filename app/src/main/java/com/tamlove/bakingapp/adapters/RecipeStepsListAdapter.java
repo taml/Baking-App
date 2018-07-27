@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.tamlove.bakingapp.R;
 import com.tamlove.bakingapp.models.Steps;
+import com.tamlove.bakingapp.ui.RecipeStepsListFragment;
 
 import java.util.List;
 
@@ -16,19 +17,30 @@ public class RecipeStepsListAdapter extends RecyclerView.Adapter<RecipeStepsList
 
     private Context mContext;
     private List<Steps> mSteps;
+    private RecipeStepsListFragment.OnStepClickListener mCallback;
 
-    public RecipeStepsListAdapter(Context context, List<Steps> steps){
+    public RecipeStepsListAdapter(Context context, List<Steps> steps, RecipeStepsListFragment.OnStepClickListener callback){
         mContext = context;
         mSteps = steps;
+        mCallback = callback;
     }
 
-    public class RecipeStepsViewHolder extends RecyclerView.ViewHolder {
+    public class RecipeStepsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public final TextView mShortDescription;
 
         public RecipeStepsViewHolder(View view) {
             super(view);
             mShortDescription = view.findViewById(R.id.recipe_short_description);
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+            Steps step = mSteps.get(adapterPosition);
+            int stepId = step.getId();
+            mCallback.onStepSelected(stepId, mSteps);
         }
     }
 

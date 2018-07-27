@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Steps implements Parcelable {
 
+    @SerializedName("id")
+    private int mId;
     @SerializedName("shortDescription")
     private String mShortDescription;
     @SerializedName("description")
@@ -16,27 +18,52 @@ public class Steps implements Parcelable {
     @SerializedName("thumbnailURL")
     private String mThumbnailURL;
 
-    public Steps(String shortDescription, String description, String videoURL, String thumbnailURL){
+    public Steps(int id, String shortDescription, String description, String videoURL, String thumbnailURL){
+        mId = id;
         mShortDescription = shortDescription;
         mDescription = description;
         mVideoURL = videoURL;
         mThumbnailURL = thumbnailURL;
     }
 
+    public int getId(){
+        return mId;
+    }
+
     public String getShortDescription(){
-        return mShortDescription;
+        if(mShortDescription == null){
+            return "";
+        } else {
+            return mShortDescription;
+        }
     }
 
     public String getDescription(){
-        return mDescription;
+        if(mDescription == null){
+            return "";
+        } else {
+            return mDescription;
+        }
     }
 
     public String getVideoURL(){
-        return mVideoURL;
+        if(mVideoURL == null){
+            return "";
+        } else {
+            return mVideoURL;
+        }
     }
 
     public String getThumbnailURL(){
-        return mThumbnailURL;
+        if(mThumbnailURL == null){
+            return "";
+        } else {
+            return mThumbnailURL;
+        }
+    }
+
+    public void setId(int id){
+        mId = id;
     }
 
     public void setShortDescription(String shortDescription){
@@ -58,6 +85,7 @@ public class Steps implements Parcelable {
     @Override
     public String toString() {
         return "Steps{" +
+                "mId='" + mId + '\'' +
                 "mShortDescription='" + mShortDescription + '\'' +
                 ", mDescription='" + mDescription + '\'' +
                 ", mVideoURL='" + mVideoURL + '\'' +
@@ -72,6 +100,7 @@ public class Steps implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(mId);
         parcel.writeString(mShortDescription);
         parcel.writeString(mDescription);
         parcel.writeString(mVideoURL);
@@ -79,6 +108,7 @@ public class Steps implements Parcelable {
     }
 
     protected Steps(Parcel in) {
+        mId = in.readInt();
         mShortDescription = in.readString();
         mDescription = in.readString();
         mVideoURL = in.readString();

@@ -26,7 +26,13 @@ public class RecipeStepsListFragment extends Fragment {
     private static Recipe sRecipe;
     private List<Steps> mSteps;
 
+    private OnStepClickListener mCallback;
+
     public RecipeStepsListFragment(){}
+
+    public interface OnStepClickListener{
+        void onStepSelected(int stepId, List<Steps> steps);
+    }
 
     public static RecipeStepsListFragment newInstance(Recipe recipe){
         RecipeStepsListFragment recipeStepsListFragment = new RecipeStepsListFragment();
@@ -39,6 +45,12 @@ public class RecipeStepsListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        try {
+           mCallback = (OnStepClickListener) context;
+        } catch (ClassCastException e){
+            throw new ClassCastException(context.toString()
+                    + " must implement OnStepClickListener");
+        }
     }
 
     @Override
@@ -60,7 +72,7 @@ public class RecipeStepsListFragment extends Fragment {
 
         if(sRecipe != null){
             mSteps = sRecipe.getSteps();
-            mStepsAdapter = new RecipeStepsListAdapter(getContext(), mSteps);
+            mStepsAdapter = new RecipeStepsListAdapter(getContext(), mSteps, mCallback);
             mStepsRecyclerView.setAdapter(mStepsAdapter);
         }
 
