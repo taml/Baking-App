@@ -49,15 +49,22 @@ public class RecipeContentActivity extends AppCompatActivity implements RecipeSt
         }
 
         if(mTwoPane){
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            RecipeStepsListFragment recipeStepsListFragment = RecipeStepsListFragment.newInstance(sRecipe);
-            fragmentManager.beginTransaction()
-                    .add(R.id.recipe_steps_list_container, recipeStepsListFragment)
-                    .commit();
-            RecipeIngredientsListFragment recipeIngredientsListFragment = RecipeIngredientsListFragment.newInstance(sRecipe);
-            fragmentManager.beginTransaction()
-                    .add(R.id.recipe_ingredients_container, recipeIngredientsListFragment)
-                    .commit();
+            if(savedInstanceState == null){
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                RecipeStepsListFragment recipeStepsListFragment = RecipeStepsListFragment.newInstance(sRecipe);
+                fragmentManager.beginTransaction()
+                        .add(R.id.recipe_steps_list_container, recipeStepsListFragment)
+                        .commit();
+                RecipeIngredientsListFragment recipeIngredientsListFragment = RecipeIngredientsListFragment.newInstance(sRecipe);
+                fragmentManager.beginTransaction()
+                        .add(R.id.recipe_ingredients_container, recipeIngredientsListFragment)
+                        .commit();
+                ArrayList<Steps> currentSteps = new ArrayList<>(sRecipe.getSteps());
+                RecipeStepsDetailFragment recipeStepsDetailFragment = RecipeStepsDetailFragment.newInstance(currentSteps, 0);
+                fragmentManager.beginTransaction()
+                        .add(R.id.recipe_detail_container, recipeStepsDetailFragment)
+                        .commit();
+            }
         } else {
             ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), sRecipe);
             viewPagerAdapter.addFrag(new RecipeIngredientsListFragment(), "Ingredients");
@@ -70,7 +77,12 @@ public class RecipeContentActivity extends AppCompatActivity implements RecipeSt
     @Override
     public void onStepSelected(int stepId, List<Steps> steps) {
         if(mTwoPane){
-
+            ArrayList<Steps> currentStep = new ArrayList<>(steps);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            RecipeStepsDetailFragment recipeStepsDetailFragment = RecipeStepsDetailFragment.newInstance(currentStep, stepId);
+                    fragmentManager.beginTransaction()
+                    .replace(R.id.recipe_detail_container, recipeStepsDetailFragment)
+                    .commit();
         } else {
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(STEPS_PARCELABLE_KEY, (ArrayList<? extends Parcelable>) steps);

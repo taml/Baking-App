@@ -2,6 +2,7 @@ package com.tamlove.bakingapp.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +39,11 @@ public class RecipeStepsListAdapter extends RecyclerView.Adapter<RecipeStepsList
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
+            Log.v("RSLA", "Position ***** " + adapterPosition);
             Steps step = mSteps.get(adapterPosition);
             int stepId = step.getId();
-            mCallback.onStepSelected(stepId, mSteps);
+//            mCallback.onStepSelected(stepId, mSteps);
+            mCallback.onStepSelected(adapterPosition, mSteps);
         }
     }
 

@@ -24,9 +24,9 @@
             android:layout_weight="1" >
 
             <FrameLayout
-                android:id="@+id/recipe_steps_detail_container"
+                android:id="@+id/recipe_detail_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
         </LinearLayout>
 
         <LinearLayout
