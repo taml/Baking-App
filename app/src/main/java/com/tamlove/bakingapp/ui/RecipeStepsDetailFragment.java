@@ -2,6 +2,7 @@ package com.tamlove.bakingapp.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ public class RecipeStepsDetailFragment extends Fragment {
 
     private static final String STEPS_PARCELABLE_KEY = "steps_parcelable";
     private static final String STEPS_ID_PARCELABLE_KEY = "steps_id_parcelable";
+    private static final String STEP_POSITION_KEY = "step_position";
 
     private TextView mDetailVideoUrl;
     private TextView mShortDescription;
@@ -49,6 +51,9 @@ public class RecipeStepsDetailFragment extends Fragment {
         if(getArguments() != null){
             sSteps = getArguments().getParcelableArrayList(STEPS_PARCELABLE_KEY);
             sPosition = getArguments().getInt(STEPS_ID_PARCELABLE_KEY);
+        }
+        if(savedInstanceState != null){
+            sPosition = savedInstanceState.getInt(STEP_POSITION_KEY);
         }
     }
 
@@ -121,5 +126,11 @@ public class RecipeStepsDetailFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STEP_POSITION_KEY, sPosition);
     }
 }
