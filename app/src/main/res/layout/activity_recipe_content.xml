@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-    <!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:id="@+id/recipe_ingredients_list_fragment"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:name="com.tamlove.bakingapp.ui.RecipeIngredientsListFragment"/>-->
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/colorBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -16,9 +10,9 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            app:tabTextColor="#FFF"
-            app:tabSelectedTextColor="@color/colorAccent"
+            android:background="@color/colorPrimary"
+            app:tabTextColor="@color/colorTextOnBackground"
+            app:tabSelectedTextColor="@color/colorTextOnBackground"
             />
 
         <android.support.v4.view.ViewPager

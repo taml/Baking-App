@@ -1,39 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    android:layout_margin="@dimen/small"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/small"
+    android:layout_marginLeft="@dimen/medium"
+    android:layout_marginStart="@dimen/medium"
+    android:layout_marginRight="@dimen/medium"
+    android:layout_marginEnd="@dimen/medium"
+    android:layout_marginBottom="@dimen/small"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/small"
+    android:paddingTop="@dimen/small">
 
     <TextView
         android:id="@+id/recipe_quantity"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:textColor="@color/colorTextOnBackground"
         android:textSize="@dimen/primary_text_size"
-        android:gravity="center"
-        tools:text="961"/>
+        tools:text="961" />
 
     <TextView
         android:id="@+id/recipe_measure"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textSize="@dimen/primary_text_size"
         android:gravity="center"
-        tools:text="TBLSP"/>
+        android:textColor="@color/colorTextOnBackground"
+        android:textSize="@dimen/primary_text_size"
+        tools:text="TBLSP" />
 
     <TextView
         android:id="@+id/recipe_ingredient"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
-        android:textSize="@dimen/primary_text_size"
-        android:paddingLeft="@dimen/medium"
-        android:paddingStart="@dimen/medium"
-        android:paddingRight="@dimen/medium"
+        android:fontFamily="@font/alice"
         android:paddingEnd="@dimen/medium"
-        tools:text="unsalted butter, softened and cut into 1 in. cubes"/>
+        android:paddingLeft="@dimen/medium"
+        android:paddingRight="@dimen/medium"
+        android:paddingStart="@dimen/medium"
+        android:textColor="@color/colorTextOnBackground"
+        android:textSize="@dimen/primary_text_size"
+        tools:text="unsalted butter, softened and cut into 1 in. cubes" />
 
 </LinearLayout>

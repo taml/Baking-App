@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="@dimen/small"
+    android:layout_marginLeft="@dimen/medium"
+    android:layout_marginStart="@dimen/medium"
+    android:layout_marginRight="@dimen/medium"
+    android:layout_marginEnd="@dimen/medium"
+    android:layout_marginBottom="@dimen/small"
     android:orientation="horizontal"
-    android:layout_margin="@dimen/small"
+    android:paddingBottom="@dimen/small"
+    android:paddingTop="@dimen/small"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,7 +17,9 @@
         android:id="@+id/recipe_short_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorTextOnBackground"
         android:layout_weight="1"
+        android:fontFamily="@font/alice"
         android:textSize="@dimen/primary_text_size"
         tools:text="Recipe Introduction"/>
 

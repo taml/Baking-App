@@ -22,7 +22,6 @@ public class RecipeStepsDetailFragment extends Fragment {
     private static final String STEP_POSITION_KEY = "step_position";
 
     private TextView mDetailVideoUrl;
-    private TextView mShortDescription;
     private TextView mDescription;
     private Button mPrevStep;
     private Button mNextStep;
@@ -62,7 +61,6 @@ public class RecipeStepsDetailFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_recipe_steps_detail, container, false);
 
         mDetailVideoUrl = rootView.findViewById(R.id.recipe_detail_step_url);
-        mShortDescription = rootView.findViewById(R.id.recipe_detail_short_description);
         mDescription = rootView.findViewById(R.id.recipe_detail_description);
         mPrevStep = rootView.findViewById(R.id.prev_step);
         mNextStep = rootView.findViewById(R.id.next_step);
@@ -70,8 +68,6 @@ public class RecipeStepsDetailFragment extends Fragment {
         Steps currentStep = sSteps.get(sPosition);
         String videoUrl = currentStep.getVideoURL();
         mDetailVideoUrl.setText(videoUrl);
-        String shortDescription = currentStep.getShortDescription();
-        mShortDescription.setText(shortDescription);
         String description = currentStep.getDescription();
         mDescription.setText(description);
 
@@ -86,8 +82,6 @@ public class RecipeStepsDetailFragment extends Fragment {
                     Steps prevStep = sSteps.get(--sPosition);
                     String videoUrl = prevStep.getVideoURL();
                     mDetailVideoUrl.setText(videoUrl);
-                    String shortDescription = prevStep.getShortDescription();
-                    mShortDescription.setText(shortDescription);
                     String description = prevStep.getDescription();
                     mDescription.setText(description);
                 }
@@ -111,8 +105,6 @@ public class RecipeStepsDetailFragment extends Fragment {
                     Steps nextStep = sSteps.get(++sPosition);
                     String videoUrl = nextStep.getVideoURL();
                     mDetailVideoUrl.setText(videoUrl);
-                    String shortDescription = nextStep.getShortDescription();
-                    mShortDescription.setText(shortDescription);
                     String description = nextStep.getDescription();
                     mDescription.setText(description);
                 }

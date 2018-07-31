@@ -35,11 +35,13 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
 
         public final ImageView mImageView;
         public final TextView mNameTextView;
+        public final TextView mServingTextView;
 
         public RecipesViewHolder(View view) {
             super(view);
             mImageView = view.findViewById(R.id.recipe_image);
             mNameTextView = view.findViewById(R.id.recipe_name);
+            mServingTextView = view.findViewById(R.id.recipe_serving);
             view.setOnClickListener(this);
         }
 
@@ -81,6 +83,8 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
         }
         String name = recipe.getName();
         holder.mNameTextView.setText(name);
+        String serving = recipe.getServings();
+        holder.mServingTextView.setText(mContext.getResources().getString(R.string.recipe_serving, serving));
     }
 
     @Override
