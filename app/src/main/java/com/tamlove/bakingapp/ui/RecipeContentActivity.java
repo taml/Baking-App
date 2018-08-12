@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.tamlove.bakingapp.R;
 import com.tamlove.bakingapp.adapters.ViewPagerAdapter;
@@ -22,9 +23,11 @@ public class RecipeContentActivity extends AppCompatActivity implements RecipeSt
     private static final String RECIPE_PARCELABLE_KEY = "recipe_parcelable";
     private static final String STEPS_PARCELABLE_KEY = "steps_parcelable";
     private static final String STEPS_ID_PARCELABLE_KEY = "steps_id_parcelable";
+    private static final String RECIPE_NAME_KEY = "recipe";
 
     public static Recipe sRecipe;
     private boolean mTwoPane;
+    private String mRecipeName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,13 @@ public class RecipeContentActivity extends AppCompatActivity implements RecipeSt
             Bundle bundle = recipeActivity.getExtras();
             if(bundle != null){
                 sRecipe = bundle.getParcelable(RECIPE_PARCELABLE_KEY);
+            }
+        }
+
+        mRecipeName = sRecipe.getName();
+        if(getSupportActionBar() != null){
+            if(!TextUtils.isEmpty(mRecipeName) || mRecipeName != null){
+                getSupportActionBar().setTitle(mRecipeName);
             }
         }
 
@@ -87,6 +97,7 @@ public class RecipeContentActivity extends AppCompatActivity implements RecipeSt
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(STEPS_PARCELABLE_KEY, (ArrayList<? extends Parcelable>) steps);
             bundle.putInt(STEPS_ID_PARCELABLE_KEY, stepId);
+            bundle.putString(RECIPE_NAME_KEY, mRecipeName);
             Intent recipeStepsDetailIntent = new Intent(RecipeContentActivity.this, RecipeStepsDetailActivity.class);
             recipeStepsDetailIntent.putExtras(bundle);
             startActivity(recipeStepsDetailIntent);

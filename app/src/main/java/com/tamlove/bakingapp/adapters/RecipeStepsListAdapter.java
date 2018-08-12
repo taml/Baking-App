@@ -39,17 +39,14 @@ public class RecipeStepsListAdapter extends RecyclerView.Adapter<RecipeStepsList
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
-            Log.v("RSLA", "Position ***** " + adapterPosition);
-            Steps step = mSteps.get(adapterPosition);
-            int stepId = step.getId();
-//            mCallback.onStepSelected(stepId, mSteps);
             mCallback.onStepSelected(adapterPosition, mSteps);
+            Log.v("RSLA", "Position ***** " + adapterPosition);
         }
     }
 
     @Override
     public RecipeStepsViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        Context context = viewGroup.getContext();
+        Context context = mContext;
         int idForListItem = R.layout.recipe_steps_item;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         boolean attachToParentImmediately = false;
