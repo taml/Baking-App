@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -29,17 +30,21 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 import com.tamlove.bakingapp.R;
 import com.tamlove.bakingapp.models.Steps;
 
 import java.util.ArrayList;
 
-public class RecipeStepsDetailFragment extends Fragment implements Player.EventListener {
+public class RecipeStepsDetailFragment extends Fragment {
 
     private static final String STEPS_PARCELABLE_KEY = "steps_parcelable";
     private static final String STEPS_ID_PARCELABLE_KEY = "steps_id_parcelable";
     private static final String STEP_POSITION_KEY = "step_position";
+    private static final String PLAY_WHEN_READY_KEY = "play_when_ready";
+    private static final String PLAYBACK_POSITION_KEY = "playback_position";
+    private static final String CURRENT_WINDOW_KEY = "current_window";
 
     private ImageView mDetailImage;
     private TextView mDescription;
@@ -53,6 +58,8 @@ public class RecipeStepsDetailFragment extends Fragment implements Player.EventL
     private boolean mPlayWhenReady = true;
     long mPlaybackPosition;
     int mCurrentWindow;
+    boolean stateRes = false;
+    boolean navClicked = false;
 
     public RecipeStepsDetailFragment(){}
 
@@ -79,6 +86,26 @@ public class RecipeStepsDetailFragment extends Fragment implements Player.EventL
         }
         if(savedInstanceState != null){
             sPosition = savedInstanceState.getInt(STEP_POSITION_KEY);
+            stateRes = true;
+            if(savedInstanceState.containsKey(PLAY_WHEN_READY_KEY)) {
+                mPlayWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY_KEY);
+            } else {
+                mPlayWhenReady = true;
+            }
+            if(savedInstanceState.containsKey(PLAYBACK_POSITION_KEY)) {
+                mPlaybackPosition = savedInstanceState.getLong(PLAYBACK_POSITION_KEY, C.TIME_UNSET);
+            } else {
+                mPlaybackPosition = C.TIME_UNSET;
+            }
+            if(savedInstanceState.containsKey(CURRENT_WINDOW_KEY)) {
+                mCurrentWindow = savedInstanceState.getInt(CURRENT_WINDOW_KEY);
+            } else {
+                mCurrentWindow = 0;
+            }
+        } else {
+            mPlayWhenReady = true;
+            mPlaybackPosition = C.TIME_UNSET;
+            mCurrentWindow = 0;
         }
     }
 
@@ -95,7 +122,7 @@ public class RecipeStepsDetailFragment extends Fragment implements Player.EventL
         Steps currentStep = sSteps.get(sPosition);
         mVideoUrl = currentStep.getVideoURL();
         String imageUrl = currentStep.getThumbnailURL();
-        setRecipeImage(mVideoUrl, imageUrl);
+        setRecipeMedia(mVideoUrl, imageUrl);
 
         String description = currentStep.getDescription();
         mDescription.setText(description);
@@ -108,10 +135,11 @@ public class RecipeStepsDetailFragment extends Fragment implements Player.EventL
             @Override
             public void onClick(View view) {
                 if(sPosition > 0) {
+                    navClicked = true;
                     Steps prevStep = sSteps.get(--sPosition);
                     mVideoUrl = prevStep.getVideoURL();
                     String imageUrl = prevStep.getThumbnailURL();
-                    setRecipeImage(mVideoUrl, imageUrl);
+                    setRecipeMedia(mVideoUrl, imageUrl);
                     String description = prevStep.getDescription();
                     mDescription.setText(description);
                 }
@@ -132,10 +160,11 @@ public class RecipeStepsDetailFragment extends Fragment implements Player.EventL
             @Override
             public void onClick(View view) {
                 if(sPosition < (sSteps.size() - 1)){
+                    navClicked = true;
                     Steps nextStep = sSteps.get(++sPosition);
                     mVideoUrl = nextStep.getVideoURL();
                     String imageUrl = nextStep.getThumbnailURL();
-                    setRecipeImage(mVideoUrl, imageUrl);
+                    setRecipeMedia(mVideoUrl, imageUrl);
                     String description = nextStep.getDescription();
                     mDescription.setText(description);
                 }
@@ -155,10 +184,19 @@ public class RecipeStepsDetailFragment extends Fragment implements Player.EventL
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(STEP_POSITION_KEY, sPosition);
+        if(mSimpleExoPlayer != null) {
+            outState.putBoolean(PLAY_WHEN_READY_KEY, mSimpleExoPlayer.getPlayWhenReady());
+            outState.putLong(PLAYBACK_POSITION_KEY, mSimpleExoPlayer.getCurrentPosition());
+            outState.putInt(CURRENT_WINDOW_KEY, mSimpleExoPlayer.getCurrentWindowIndex());
+        }
     }
 
-    private void setRecipeImage(String videoUrl, String imageUrl){
+    private void setRecipeMedia(String videoUrl, String imageUrl){
+        if(mSimpleExoPlayer != null) {
+            releasePlayer();
+        }
         if(TextUtils.isEmpty(videoUrl)){
+            mPlayerView.setVisibility(View.GONE);
             mDetailImage.setVisibility(View.VISIBLE);
             if(!TextUtils.isEmpty(imageUrl)){
                 Picasso.get()
@@ -170,7 +208,11 @@ public class RecipeStepsDetailFragment extends Fragment implements Player.EventL
                 mDetailImage.setImageResource(R.drawable.baking_background);
             }
         } else {
-            mDetailImage.setVisibility(View.INVISIBLE);
+            if(mSimpleExoPlayer == null) {
+                initialisePlayer(videoUrl);
+            }
+            mPlayerView.setVisibility(View.VISIBLE);
+            mDetailImage.setVisibility(View.GONE);
         }
     }
 
@@ -183,12 +225,20 @@ public class RecipeStepsDetailFragment extends Fragment implements Player.EventL
                         new DefaultLoadControl());
 
                 mPlayerView.setPlayer(mSimpleExoPlayer);
-                mSimpleExoPlayer.setPlayWhenReady(mPlayWhenReady);
-                mSimpleExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
 
                 Uri uri = Uri.parse(videoUrl);
                 MediaSource mediaSource = buildMediaSource(uri);
-                mSimpleExoPlayer.prepare(mediaSource, true, false);
+                if(stateRes && navClicked) {
+                    mSimpleExoPlayer.setPlayWhenReady(mPlayWhenReady);
+                    mSimpleExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
+                    mSimpleExoPlayer.prepare(mediaSource);
+                    navClicked = false;
+                } else {
+                    mSimpleExoPlayer.prepare(mediaSource);
+                    mSimpleExoPlayer.setPlayWhenReady(mPlayWhenReady);
+                    mSimpleExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
+                }
+                Log.v("RSDF", "*****" + stateRes + "*****" + navClicked);
             }
         }
     }
@@ -198,54 +248,16 @@ public class RecipeStepsDetailFragment extends Fragment implements Player.EventL
                 new DefaultHttpDataSourceFactory("baking-app")).createMediaSource(uri);
     }
 
-    @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+    private void releasePlayer() {
+        if (mSimpleExoPlayer != null) {
+            mPlaybackPosition = mSimpleExoPlayer.getCurrentPosition();
+            mCurrentWindow = mSimpleExoPlayer.getCurrentWindowIndex();
+            mPlayWhenReady = mSimpleExoPlayer.getPlayWhenReady();
 
-    }
-
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-    }
-
-    @Override
-    public void onLoadingChanged(boolean isLoading) {
-
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
-    }
-
-    @Override
-    public void onRepeatModeChanged(int repeatMode) {
-
-    }
-
-    @Override
-    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-
-    }
-
-    @Override
-    public void onPlayerError(ExoPlaybackException error) {
-
-    }
-
-    @Override
-    public void onPositionDiscontinuity(int reason) {
-
-    }
-
-    @Override
-    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
-    }
-
-    @Override
-    public void onSeekProcessed() {
-
+            mSimpleExoPlayer.stop();
+            mSimpleExoPlayer.release();
+            mSimpleExoPlayer = null;
+        }
     }
 
     @Override
@@ -259,4 +271,27 @@ public class RecipeStepsDetailFragment extends Fragment implements Player.EventL
         super.onResume();
         initialisePlayer(mVideoUrl);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        releasePlayer();
+    }
+
 }

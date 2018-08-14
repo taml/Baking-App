@@ -19,12 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.RecipeContentActivity">
+        <activity android:name=".ui.RecipeContentActivity" android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.RecipeActivity" />
         </activity>
-        <activity android:name=".ui.RecipeStepsDetailActivity">
+        <activity android:name=".ui.RecipeStepsDetailActivity" android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.RecipeContentActivity" />

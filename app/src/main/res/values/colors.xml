@@ -9,4 +9,6 @@
     <color name="colorTextLight">#F5F5F5</color>
     <color name="colorDivider">#b39ddb</color>
 
+    <color name="colorExoBackground">#CC000000</color>
+
 </resources>

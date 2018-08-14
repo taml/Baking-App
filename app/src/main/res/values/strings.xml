@@ -9,6 +9,9 @@
     <string name="recipe_serving">Serves: %1$s</string>
 
     <string name="testRecipeText">Cheesecake</string>
+
     <string name="button_previous">Previous</string>
     <string name="button_next">Next</string>
+    <string name="recipe_step_image_description">Recipe Step Placeholder Image</string>
+    <string name="recipe_description">Recipe Introduction</string>
 </resources>
