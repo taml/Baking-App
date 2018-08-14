@@ -9,6 +9,10 @@
     <string name="recipe_serving">Serves: %1$s</string>
 
     <string name="testRecipeText">Cheesecake</string>
+    <string name="testIntentRecipeText">Nutella Pie</string>
+    <string name="testIntentTabText">Steps</string>
+    <string name="testIntentRecyclerText">Recipe Introduction</string>
+    <string name="testIntentDescriptionText">1. Preheat the oven</string>
 
     <string name="button_previous">Previous</string>
     <string name="button_next">Next</string>
