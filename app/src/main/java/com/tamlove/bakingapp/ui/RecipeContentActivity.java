@@ -17,10 +17,11 @@ import com.tamlove.bakingapp.models.Steps;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tamlove.bakingapp.widget.RecipeUtils.RECIPE_PARCELABLE_KEY;
+
 
 public class RecipeContentActivity extends AppCompatActivity implements RecipeStepsListFragment.OnStepClickListener {
 
-    private static final String RECIPE_PARCELABLE_KEY = "recipe_parcelable";
     private static final String STEPS_PARCELABLE_KEY = "steps_parcelable";
     private static final String STEPS_ID_PARCELABLE_KEY = "steps_id_parcelable";
     private static final String RECIPE_NAME_KEY = "recipe";

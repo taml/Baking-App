@@ -40,7 +40,8 @@
                 android:resource="@xml/widget_recipe_info"/>
         </receiver>
 
-        <service android:name=".widget.RecipeWidgetService" />
+        <service android:name=".widget.RecipeWidgetService"
+                 android:permission="android.permission.BIND_REMOTEVIEWS"/>
 
         <!-- Fonts -->
         <meta-data
