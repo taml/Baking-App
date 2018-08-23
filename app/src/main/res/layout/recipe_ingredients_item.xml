@@ -15,26 +15,26 @@
 
     <TextView
         android:id="@+id/recipe_quantity"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/no_dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textColor="@color/colorTextOnBackground"
         android:textSize="@dimen/primary_text_size"
-        tools:text="961" />
+        tools:text="@string/placeholder_quantity" />
 
     <TextView
         android:id="@+id/recipe_measure"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/no_dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
         android:textColor="@color/colorTextOnBackground"
         android:textSize="@dimen/primary_text_size"
-        tools:text="TBLSP" />
+        tools:text="@string/placeholder_measure" />
 
     <TextView
         android:id="@+id/recipe_ingredient"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/no_dp"
         android:layout_height="wrap_content"
         android:layout_weight="4"
         android:fontFamily="@font/alice"
@@ -44,6 +44,6 @@
         android:paddingStart="@dimen/medium"
         android:textColor="@color/colorTextOnBackground"
         android:textSize="@dimen/primary_text_size"
-        tools:text="unsalted butter, softened and cut into 1 in. cubes" />
+        tools:text="@string/placeholder_ingredient" />
 
 </LinearLayout>

@@ -17,12 +17,12 @@
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/recipe_detail_step_video"
                 android:layout_width="match_parent"
-                android:layout_height="250dp" />
+                android:layout_height="@dimen/exo_player_size" />
 
             <ImageView
                 android:id="@+id/recipe_detail_step_image"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="@dimen/exo_player_size"
                 android:contentDescription="@string/recipe_step_image_description" />
 
         </FrameLayout>
@@ -40,20 +40,20 @@
 
                 <Button
                     android:id="@+id/prev_step"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/no_dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorPrimaryDark"
                     android:text="@string/button_previous" />
 
                 <View
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/no_dp"
                     android:layout_height="1dp"
                     android:layout_weight="1" />
 
                 <Button
                     android:id="@+id/next_step"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/no_dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorPrimaryDark"

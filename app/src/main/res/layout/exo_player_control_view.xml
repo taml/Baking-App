@@ -12,6 +12,10 @@
         android:gravity="center"
         android:orientation="horizontal">
 
+        <ImageButton android:id="@id/exo_rew"
+            style="@style/ExoMediaButton.Rewind"
+            android:tint="@color/colorAccent"/>
+
         <ImageButton android:id="@id/exo_prev"
             style="@style/ExoMediaButton.Previous"
             android:tint="@color/colorAccent"/>
@@ -22,6 +26,10 @@
 
         <ImageButton android:id="@id/exo_pause"
             style="@style/ExoMediaButton.Pause"
+            android:tint="@color/colorAccent"/>
+
+        <ImageButton android:id="@id/exo_ffwd"
+            style="@style/ExoMediaButton.FastForward"
             android:tint="@color/colorAccent"/>
 
     </LinearLayout>
@@ -45,7 +53,7 @@
 
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@id/exo_progress"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/no_dp"
             android:layout_height="@dimen/large"
             android:layout_weight="1" />
 

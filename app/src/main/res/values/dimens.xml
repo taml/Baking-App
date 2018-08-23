@@ -7,6 +7,7 @@
     <dimen name="xlarge">64dp</dimen>
 
     <dimen name="exo_text_size">14sp</dimen>
+    <dimen name="exo_player_size">250dp</dimen>
     <dimen name="heading_text_size">22sp</dimen>
     <dimen name="secondary_heading_size">20sp</dimen>
     <dimen name="primary_text_size">18sp</dimen>
@@ -15,4 +16,10 @@
 
     <dimen name="master_list_width">400dp</dimen>
     <dimen name="divider">2dp</dimen>
+    <dimen name="button_divider">1dp</dimen>
+
+    <dimen name="widget_width">180dp</dimen>
+    <dimen name="widget_height">180dp</dimen>
+    <dimen name="widget_resize_width">110dp</dimen>
+    <dimen name="no_dp">0dp</dimen>
 </resources>

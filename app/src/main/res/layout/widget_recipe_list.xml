@@ -1,11 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/small"
+    android:layout_marginLeft="@dimen/medium"
+    android:layout_marginStart="@dimen/medium"
+    android:layout_marginRight="@dimen/medium"
+    android:layout_marginEnd="@dimen/medium"
+    android:layout_marginBottom="@dimen/small"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/small"
+    android:paddingTop="@dimen/small">
 
     <TextView
-        android:id="@+id/widget_list_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:id="@+id/widget_recipe_quantity"
+        android:layout_width="@dimen/no_dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/colorTextOnBackground"
+        android:textSize="@dimen/primary_text_size"
+        tools:text="@string/placeholder_quantity" />
+
+    <TextView
+        android:id="@+id/widget_recipe_measure"
+        android:layout_width="@dimen/no_dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textColor="@color/colorTextOnBackground"
+        android:textSize="@dimen/primary_text_size"
+        tools:text="@string/placeholder_measure" />
+
+    <TextView
+        android:id="@+id/widget_recipe_ingredient"
+        android:layout_width="@dimen/no_dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:fontFamily="@font/alice"
+        android:paddingEnd="@dimen/medium"
+        android:paddingLeft="@dimen/medium"
+        android:paddingRight="@dimen/medium"
+        android:paddingStart="@dimen/medium"
+        android:textColor="@color/colorTextOnBackground"
+        android:textSize="@dimen/primary_text_size"
+        tools:text="@string/placeholder_ingredient" />
 
 </LinearLayout>

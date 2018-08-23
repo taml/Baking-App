@@ -228,7 +228,7 @@ public class RecipeStepsDetailFragment extends Fragment {
 
                 Uri uri = Uri.parse(videoUrl);
                 MediaSource mediaSource = buildMediaSource(uri);
-                if(stateRes && navClicked) {
+                if((stateRes && navClicked) || navClicked) {
                     mSimpleExoPlayer.setPlayWhenReady(mPlayWhenReady);
                     mSimpleExoPlayer.seekTo(mCurrentWindow, mPlaybackPosition);
                     mSimpleExoPlayer.prepare(mediaSource);

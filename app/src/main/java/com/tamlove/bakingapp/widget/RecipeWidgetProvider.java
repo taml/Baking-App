@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.RemoteViews;
 
 import com.google.gson.Gson;
@@ -32,11 +33,15 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId){
         SharedPreferences sharedPreferences = context.getSharedPreferences(RECIPE_PREF, Context.MODE_PRIVATE);
+        String recipeName;
         if(sharedPreferences.contains(RECIPE_WIDGET_PREF)){
             String recipeAsGson = sharedPreferences.getString(RECIPE_WIDGET_PREF, null);
             Gson gson = new Gson();
             Recipe recipe = gson.fromJson(recipeAsGson, Recipe.class);
-            String recipeName = recipe.getName();
+            recipeName = recipe.getName();
+            if(recipeName == null || TextUtils.isEmpty(recipeName)) {
+                recipeName = context.getResources().getString(R.string.no_recipe_liked);
+            }
 
             Intent widgetServiceIntent = new Intent(context, RecipeWidgetService.class);
             widgetServiceIntent.putExtra(RECIPE_STRING_WIDGET_KEY, recipeAsGson);
@@ -51,9 +56,11 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
             Intent activityToOpenIntent = new Intent(context, RecipeContentActivity.class);
             activityToOpenIntent.putExtras(bundle);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, activityToOpenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteView.setOnClickPendingIntent(R.id.widget_button, pendingIntent);
+            remoteView.setOnClickPendingIntent(R.id.widget_textview, pendingIntent);
             remoteView.setEmptyView(R.id.widget_listview, R.id.widget_empty_view);
 
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_textview);
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.widget_listview);
             appWidgetManager.updateAppWidget(appWidgetId, remoteView);
         }
     }

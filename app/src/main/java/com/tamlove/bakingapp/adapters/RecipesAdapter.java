@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -88,7 +89,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
         } else {
             holder.mImageView.setImageResource(R.drawable.baking_background);
         }
-        final String name = recipe.getName();
+        String name = recipe.getName();
         holder.mNameTextView.setText(name);
         String serving = recipe.getServings();
         holder.mServingTextView.setText(mContext.getResources().getString(R.string.recipe_serving, serving));
@@ -101,6 +102,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesV
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(RECIPE_WIDGET_PREF, recipeToGson);
                 editor.apply();
+                Toast.makeText(mContext, mContext.getResources().getString(R.string.widget_recipe_saved), Toast.LENGTH_LONG).show();
             }
         });
     }
